@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Welcome</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <img src="assets/galaktopoleio-logo-18a41922.png" class="logo">
+
+    <h1 id="welcomeText"></h1>
+
+    <div class="menu" id="menu"></div>
+
+    <button onclick="logout()">Logout</button>
+
+</div>
+
+<script>
+
+const user = localStorage.getItem("user");
+const role = localStorage.getItem("role");
+
+if(!user || !role){
+    window.location.href = "index.html";
+}
+
+welcomeText.innerText = "Καλώς ήρθες, " + user;
+
+const menu = document.getElementById("menu");
+
+
+
+if(role === "employee"){
+    menu.innerHTML = `
+        <a href="draft-order.html">📦 Πρόχειρη Παραγγελία</a>
+        <a href="inventory.html">📊 Μεταβολές Αποθεμάτων</a>
+    `;
+}
+
+else if(role === "manager"){
+    menu.innerHTML = `
+        <a href="review-order.html">📝 Έλεγχος Παραγγελίας</a>
+        <a href="dashboard.html">📈 Dashboard</a>
+        <a href="inventory.html">📊 Αποθέματα</a>
+    `;
+}
+
+else if(role === "supplier"){
+    menu.innerHTML = `
+        <a href="supplier.html">🚚 Τροφοδοσία Παραγγελίας</a>
+    `;
+}
+
+function logout(){
+    localStorage.clear();
+    window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

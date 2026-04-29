@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📊 Παραγγελίες και Αποθέματα Καταστήματος</h2>
+
+    
+    <div class="menu menu-3">
+
+        <div class="card kpi">
+            <h3>📦 Αποθέματα</h3>
+            <div class="big-number">80</div>
+            <p class="muted">Συνολικά διαθέσιμα προϊόντα</p>
+        </div>
+
+        <div class="card kpi">
+            <h3>🧾 Παραγγελίες</h3>
+            <div class="big-number">2</div>
+            <p class="muted">Ενεργές παραγγελίες</p>
+        </div>
+
+        <div class="card kpi alert">
+            <h3>⚠️ Εκκρεμότητες</h3>
+            <div class="big-number">1</div>
+            <p class="muted">Χρειάζονται ενέργεια</p>
+        </div>
+
+    </div>
+
+   
+    <div class="menu menu-2">
+
+        
+        <div class="card">
+            <h3>📦 Απόθεμα προϊόντων</h3>
+
+            <div class="row">
+                <span>Milk</span>
+                <span class="tag good">50</span>
+            </div>
+
+            <div class="row">
+                <span>Bread</span>
+                <span class="tag warning">30</span>
+            </div>
+        </div>
+
+       
+        <div class="card">
+            <h3>🧾 Παραγγελίες</h3>
+
+            <div id="ordersList"></div>
+        </div>
+
+    </div>
+
+
+    <div class="menu menu-1">
+
+        <div class="card" id="orderDetails" style="display:none;">
+            <h3>📄 Λεπτομέρειες Παραγγελίας</h3>
+
+            <p><strong>ID:</strong> <span id="orderId"></span></p>
+            <p><strong>Ημερομηνία:</strong> <span id="orderDate"></span></p>
+
+            <h4>Προϊόντα:</h4>
+            <div id="orderProducts"></div>
+        </div>
+
+    </div>
+
+
+    <div class="menu menu-1">
+
+        <div class="card highlight">
+            <h3>⚡ Γρήγορες Ενέργειες</h3>
+            <button onclick="exportData()">Εξαγωγή Δεδομένων</button>
+        </div>
+
+    </div>
+
+    <a href="welcome.html">← Πίσω</a>
+
+</div>
+
+<script>
+
+
+const orders = [
+    {
+        id: 1,
+        date: "2026-04-28",
+        status: "Pending",
+        products: [
+            { name: "Milk", qty: 10 },
+            { name: "Bread", qty: 5 }
+        ]
+    },
+    {
+        id: 2,
+        date: "2026-04-27",
+        status: "Completed",
+        products: [
+            { name: "Milk", qty: 20 }
+        ]
+    }
+];
+
+
+const ordersList = document.getElementById("ordersList");
+
+orders.forEach(order => {
+
+    const div = document.createElement("div");
+    div.className = "row clickable";
+
+    div.innerHTML = `
+        <span>#${order.id}</span>
+        <span class="tag ${order.status === 'Pending' ? 'pending' : 'done'}">
+            ${order.status}
+        </span>
+    `;
+
+    div.onclick = () => showOrder(order);
+
+    ordersList.appendChild(div);
+});
+
+
+function showOrder(order){
+
+    document.getElementById("orderDetails").style.display = "block";
+
+    document.getElementById("orderId").innerText = order.id;
+    document.getElementById("orderDate").innerText = order.date;
+
+    const productsBox = document.getElementById("orderProducts");
+    productsBox.innerHTML = "";
+
+    order.products.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML = `
+            <span>${p.name}</span>
+            <span>${p.qty}</span>
+        `;
+        productsBox.appendChild(row);
+    });
+}
+
+function exportData(){
+    alert("Εξαγωγή δεδομένων...");
+}
+
+</script>
+
+</body>
+</html>

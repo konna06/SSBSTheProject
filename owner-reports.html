@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Owner Reports</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Γενικές αναφορές καταστημάτων</h2>
+
+    <div class="card">
+        <h3>🏪 Επιλογή Καταστήματος</h3>
+
+        <select id="storeSelect" onchange="resetView()">
+            <option value="">-- Επιλογή Καταστήματος --</option>
+            <option value="athens">Αθήνα</option>
+            <option value="thessaloniki">Θεσσαλονίκη</option>
+            <option value="patra">Πάτρα</option>
+        </select>
+    </div>
+
+  
+    <div id="step1" class="card">
+        <h3>1️⃣ Προβολή Αναφορών</h3>
+
+        <div class="menu menu-2">
+            <button onclick="loadReport('stock')">📦 Αποθέματα</button>
+            <button onclick="loadReport('orders')">🧾 Παραγγελίες</button>
+        </div>
+    </div>
+
+    
+    <div id="step2" class="card" style="display:none;">
+        <h3>2️⃣ Αναλυτικά Δεδομένα</h3>
+        <div id="reportContent"></div>
+    </div>
+
+    <div id="step3" class="card" style="display:none;">
+        <h3>3️⃣ Φίλτρα</h3>
+
+        <select id="filterSelect" onchange="applyFilter()">
+            <option value="">-- Φίλτρο --</option>
+            <option value="all">Όλα</option>
+            <option value="recent">Πρόσφατα</option>
+            <option value="low">Χαμηλά αποθέματα</option>
+        </select>
+
+        <div id="filteredResults" style="margin-top:15px;"></div>
+    </div>
+
+  
+    <div id="step4" class="card highlight" style="display:none;">
+        <h3>4️⃣ Συνολική Εικόνα</h3>
+        <div id="statusOverview"></div>
+    </div>
+
+    <br>
+    <a href="welcome.html">← Πίσω</a>
+
+</div>
+
+<script>
+
+const role = localStorage.getItem("role");
+
+
+if(role !== "owner"){
+    window.location.href = "welcome.html";
+}
+
+
+const storeData = {
+    athens: {
+        stock: [
+            { product: "Milk", qty: 50 },
+            { product: "Bread", qty: 30 }
+        ],
+        orders: [
+            { id: 1, date: "2026-04-20", items: ["Milk"], status: "Pending" }
+        ]
+    },
+
+    thessaloniki: {
+        stock: [
+            { product: "Milk", qty: 20 },
+            { product: "Cheese", qty: 15 }
+        ],
+        orders: [
+            { id: 2, date: "2026-04-22", items: ["Cheese"], status: "Completed" }
+        ]
+    },
+
+    patra: {
+        stock: [
+            { product: "Bread", qty: 60 }
+        ],
+        orders: [
+            { id: 3, date: "2026-04-25", items: ["Bread"], status: "Pending" }
+        ]
+    }
+};
+
+let currentReport = null;
+
+function getStore(){
+    return document.getElementById("storeSelect").value;
+}
+
+
+function resetView(){
+    document.getElementById("step2").style.display = "none";
+    document.getElementById("step3").style.display = "none";
+    document.getElementById("step4").style.display = "none";
+}
+
+
+function loadReport(type){
+
+    const store = getStore();
+    if(!store){
+        alert("Επίλεξε κατάστημα πρώτα");
+        return;
+    }
+
+    currentReport = type;
+
+    document.getElementById("step2").style.display = "block";
+    document.getElementById("step3").style.display = "block";
+    document.getElementById("step4").style.display = "block";
+
+    if(type === "stock"){
+        renderStock(store);
+    } else {
+        renderOrders(store);
+    }
+
+    renderOverview(store);
+}
+
+
+function renderStock(store){
+
+    const data = storeData[store].stock;
+
+    let html = "<table><tr><th>Προϊόν</th><th>Ποσότητα</th></tr>";
+
+    data.forEach(p => {
+        html += `<tr><td>${p.product}</td><td>${p.qty}</td></tr>`;
+    });
+
+    html += "</table>";
+
+    document.getElementById("reportContent").innerHTML = html;
+}
+
+
+function renderOrders(store){
+
+    const data = storeData[store].orders;
+
+    let html = "<table><tr><th>ID</th><th>Ημερομηνία</th><th>Προϊόντα</th><th>Status</th></tr>";
+
+    data.forEach(o => {
+        html += `
+        <tr>
+            <td>${o.id}</td>
+            <td>${o.date}</td>
+            <td>${o.items.join(", ")}</td>
+            <td>${o.status}</td>
+        </tr>`;
+    });
+
+    html += "</table>";
+
+    document.getElementById("reportContent").innerHTML = html;
+}
+
+
+function applyFilter(){
+
+    const store = getStore();
+    const f = document.getElementById("filterSelect").value;
+
+    let result = [];
+
+    if(currentReport === "stock"){
+
+        let data = storeData[store].stock;
+
+        if(f === "low"){
+            result = data.filter(p => p.qty < 25);
+        } else {
+            result = data;
+        }
+
+        document.getElementById("filteredResults").innerHTML =
+            result.map(p =>
+                `<div class="row"><span>${p.product}</span><span class="tag">${p.qty}</span></div>`
+            ).join("");
+    }
+
+    if(currentReport === "orders"){
+
+        let data = storeData[store].orders;
+
+        if(f === "recent"){
+            result = data.slice(-1);
+        } else {
+            result = data;
+        }
+
+        document.getElementById("filteredResults").innerHTML =
+            result.map(o =>
+                `<div class="row"><span>#${o.id} - ${o.date}</span><span class="tag">${o.status}</span></div>`
+            ).join("");
+    }
+}
+
+
+function renderOverview(store){
+
+    const data = storeData[store];
+
+    const totalStock = data.stock.reduce((a,b)=>a+b.qty,0);
+    const orders = data.orders.length;
+    const pending = data.orders.filter(o=>o.status==="Pending").length;
+
+    document.getElementById("statusOverview").innerHTML = `
+        <p>🏪 Κατάστημα: <b>${store}</b></p>
+        <p>📦 Σύνολο αποθεμάτων: <b>${totalStock}</b></p>
+        <p>🧾 Παραγγελίες: <b>${orders}</b></p>
+        <p>⚠️ Εκκρεμείς: <b>${pending}</b></p>
+    `;
+}
+
+</script>
+
+</body>
+</html>

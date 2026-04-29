@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>System Portal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <img src="assets/galaktopoleio-logo-18a41922.png" class="logo">
+
+    <h1>Smart Stock Barcode System - SSBS</h1>
+
+    <p style="text-align:center; margin:0;">
+        Επιλέξτε λειτουργία για να συνεχίσετε
+    </p>
+
+    
+    <div class="menu">
+        <button class="func-btn" onclick="selectFunction('reports', this)">📊 Προβολή Αναφορών</button>
+        <button class="func-btn" onclick="selectFunction('draft', this)">📦 Πρόχειρη Παραγγελία</button>
+        <button class="func-btn" onclick="selectFunction('review', this)">📝 Έλεγχος Παραγγελίας</button>
+        <button class="func-btn" onclick="selectFunction('inventory', this)">📊 Μεταβολές Αποθεμάτων</button>
+        <button class="func-btn" onclick="selectFunction('supplier', this)">🚚 Τροφοδοσία Καταστήματος</button>
+        <button class="func-btn" onclick="selectFunction('dashboard', this)">📈 Προβολή Παραγγελιών</button>
+
+    </div>
+
+    <div id="loginBox" class="card" style="display:none; margin-top:20px; max-width:500px;">
+
+        <h3 id="selectedText" style="text-align:center; color:#0d47a1;"></h3>
+
+        <div style="display:flex; flex-direction:column; gap:14px;">
+
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+
+            <select id="role">
+                <option value="" disabled selected>Επιλέξτε Ρόλο</option>
+                <option value="manager">Υπεύθυνος</option>
+                <option value="employee">Υπάλληλος</option>
+                <option value="supplier">Προμηθευτής</option>
+                <option value="owner">Ιδιοκτήτης</option>
+            </select>
+
+            <button onclick="login()">Login</button>
+
+            <p id="error"></p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let selectedFunction = null;
+
+
+const users = {
+    "owner1": { password: "0000", role: "owner" },
+    "manager1": { password: "1111", role: "manager" },
+    "employee1": { password: "2222", role: "employee" },
+    "supplier1": { password: "3333", role: "supplier" }
+};
+
+
+const access = {
+    draft: ["employee"],
+    review: ["manager"],
+    inventory: ["employee", "manager"],
+    supplier: ["supplier"],
+    dashboard: ["manager"],
+    reports: ["owner"]
+};
+
+
+function selectFunction(func, el){
+
+    selectedFunction = func;
+
+   
+    document.querySelectorAll(".func-btn").forEach(btn => btn.classList.remove("active"));
+    el.classList.add("active");
+
+    document.getElementById("loginBox").style.display = "block";
+
+    const titles = {
+        draft: "Πρόχειρη Παραγγελία",
+        review: "Έλεγχος Παραγγελίας",
+        inventory: "Μεταβολές Αποθεμάτων",
+        supplier: "Τροφοδοσία Καταστήματος",
+        dashboard: "Προβολή Παραγγελιών",
+        reports: "Προβολή Αναφορών"
+    };
+
+    document.getElementById("selectedText").innerText =
+        "Σύνδεση για: " + titles[func];
+}
+
+
+function login(){
+
+    const u = document.getElementById("username").value.trim();
+    const p = document.getElementById("password").value.trim();
+    const r = document.getElementById("role").value;
+
+    const errorBox = document.getElementById("error");
+    errorBox.innerText = "";
+
+    if(selectedFunction === "reports") location.href = "owner-reports.html";
+
+    if(!selectedFunction){
+        return errorBox.innerText = "Επίλεξε λειτουργία πρώτα";
+    }
+
+    if(!users[u]){
+        return errorBox.innerText = "Λάθος username";
+    }
+
+    if(users[u].password !== p){
+        return errorBox.innerText = "Λάθος password";
+    }
+
+    if(users[u].role !== r){
+        return errorBox.innerText = "Λάθος ρόλος";
+    }
+
+    if(!access[selectedFunction].includes(r)){
+        return errorBox.innerText = "Δεν έχεις πρόσβαση σε αυτή τη λειτουργία";
+    }
+
+    localStorage.setItem("user", u);
+    localStorage.setItem("role", r);
+
+    if(selectedFunction === "draft") location.href = "draft-order.html";
+    if(selectedFunction === "review") location.href = "review-order.html";
+    if(selectedFunction === "inventory") location.href = "inventory.html";
+    if(selectedFunction === "supplier") location.href = "supplier.html";
+    if(selectedFunction === "dashboard") location.href = "dashboard.html";
+}
+
+</script>
+
+</body>
+</html>

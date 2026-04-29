@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Review Order</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+<h2>Έλεγχος Παραγγελίας</h2>
+
+<div id="access"></div>
+
+<table id="orderTable">
+    <thead>
+        <tr>
+            <th>Προϊόν</th>
+            <th>Ποσότητα</th>
+            <th>Ενέργεια</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>Milk</td>
+            <td>
+                <input type="number" value="10" id="qty1">
+            </td>
+            <td>
+                <button onclick="updateRow(this)">✏ Επεξεργασία</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Bread</td>
+            <td>
+                <input type="number" value="5" id="qty2">
+            </td>
+            <td>
+                <button onclick="updateRow(this)">✏ Επεξεργασία</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="display:flex; gap:12px; width:100%; margin-top:15px;">
+    <button onclick="approveOrder()">✔ Καταχώριση</button>
+    <button onclick="rejectOrder()" style="background:red;">✖ Απόρριψη</button>
+</div>
+
+<a href="welcome.html">Πίσω</a>
+
+</div>
+
+<script>
+
+
+if(localStorage.getItem("role") !== "manager"){
+    window.location.href = "welcome.html";
+}
+
+
+function updateRow(btn){
+    const row = btn.parentElement.parentElement;
+    const product = row.cells[0].innerText;
+    const input = row.querySelector("input");
+
+    alert("Επεξεργασία προϊόντος: " + product + "\nΝέα ποσότητα: " + input.value);
+}
+
+
+function approveOrder(){
+
+    const rows = document.querySelectorAll("#orderTable tbody tr");
+
+    let summary = "✔ Παραγγελία Εγκρίθηκε\n\n";
+
+    rows.forEach(r => {
+        const product = r.cells[0].innerText;
+        const qty = r.querySelector("input").value;
+
+        summary += product + ": " + qty + "\n";
+    });
+
+    alert(summary);
+
+}
+
+
+function rejectOrder(){
+    const confirmReject = confirm("Σίγουρα θέλεις απόρριψη της παραγγελίας;");
+
+    if(confirmReject){
+        alert("✖ Η παραγγελία απορρίφθηκε");
+    }
+}
+
+</script>
+
+</body>
+</html>

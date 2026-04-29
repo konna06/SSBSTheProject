@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Draft Order</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+<h2>Πρόχειρη Παραγγελία</h2>
+
+<div id="access"></div>
+
+<input type="text" placeholder="Προϊόν">
+<input type="number" placeholder="Ποσότητα">
+
+<button>Αποθήκευση</button>
+
+<a href="welcome.html">Πίσω</a>
+
+</div>
+
+<script>
+
+const role = localStorage.getItem("role");
+
+if(role !== "employee"){
+    window.location.href = "welcome.html";
+}
+
+</script>
+
+</body>
+</html>
