@@ -17,9 +17,17 @@
 
         <select id="storeSelect" onchange="resetView()">
             <option value="">-- Επιλογή Καταστήματος --</option>
-            <option value="athens">Αθήνα</option>
-            <option value="thessaloniki">Θεσσαλονίκη</option>
-            <option value="patra">Πάτρα</option>
+            <option value="glyfada">Άνω Γλυφάδα, Γούναρη 35</option>
+            <option value="xolargos">Χολαργός, Μεσογείων 188</option>
+            <option value="xalandri">Χαλάνδρι, Πεντέλης 34-36</option>
+            <option value="patisia">Πατήσια, Αγίου Μελετίου & Μιχ. Βόδα 164</option>
+            <option value="agiaparaskevi">Αγία Παρασκευή, Μεσογείων 387</option>
+            <option value="paiania">Παιανία, Λαυρίου 149</option>
+            <option value="palaiofaliro">Παλαιό Φάληρο, Ζησιμοπούλου 93</option>
+            <option value="vyronas">Βύρωνας, Χρυσοστόμου Σμύρνης 114</option>
+            <option value="kypseli">Κυψέλη, Σικίνου 18 & Λέλας Καραγιάννη</option>
+            <option value="pagrati">Παγκράτι, Φιλολάου 87</option>
+            <option value="agioseleftherios">Άγιος Ελευθέριος, Αχαρνών 380</option>
         </select>
     </div>
 
@@ -74,34 +82,125 @@ if(role !== "owner"){
 
 
 const storeData = {
-    athens: {
+    glyfada: {
         stock: [
             { product: "Milk", qty: 50 },
-            { product: "Bread", qty: 30 }
+            { product: "Yogurt", qty: 30 }
         ],
         orders: [
             { id: 1, date: "2026-04-20", items: ["Milk"], status: "Pending" }
         ]
     },
 
-    thessaloniki: {
+    xolargos: {
         stock: [
             { product: "Milk", qty: 20 },
-            { product: "Cheese", qty: 15 }
+            { product: "Yogurt", qty: 15 }
         ],
         orders: [
             { id: 2, date: "2026-04-22", items: ["Cheese"], status: "Completed" }
         ]
     },
 
-    patra: {
+    xalandri: {
         stock: [
-            { product: "Bread", qty: 60 }
+            { product: "Yogurt", qty: 25 }
         ],
         orders: [
             { id: 3, date: "2026-04-25", items: ["Bread"], status: "Pending" }
         ]
+    },
+
+    patisia: {
+        stock: [
+            { product: "Milk", qty: 10 },
+            { product: "Yogurt", qty: 5 }
+        ],
+        orders: [
+            { id: 4, date: "2026-04-27", items: ["Milk", "Yogurt"], status: "Completed" }
+        ]
+    },
+
+    xolargos: {
+        stock: [
+            { product: "Milk", qty: 20 },
+            { product: "Yogurt", qty: 15 }
+        ],
+        orders: [
+            { id: 2, date: "2026-04-22", items: ["Cheese"], status: "Completed" }
+        ]
+    },
+
+    agiaparaskevi: {
+        stock: [
+            { product: "Milk", qty: 40 },
+            { product: "Yogurt", qty: 20 }
+        ],
+        orders: [
+            { id: 5, date: "2026-04-28", items: ["Yogurt"], status: "Pending" }
+        ]
+    },
+
+    paiania: {
+        stock: [
+            { product: "Milk", qty: 30 },
+            { product: "Yogurt", qty: 10 }
+        ],
+        orders: [
+            { id: 6, date: "2026-04-29", items: ["Milk"], status: "Completed" }
+        ]
+    },
+
+    palaiofaliro: {
+        stock: [
+            { product: "Milk", qty: 15 },
+            { product: "Yogurt", qty: 5 }
+        ],
+        orders: [
+            { id: 7, date: "2026-04-30", items: ["Yogurt"], status: "Pending" }
+        ]
+    },
+
+    vyronas: {
+        stock: [
+            { product: "Milk", qty: 25 },
+            { product: "Yogurt", qty: 10 }
+        ],
+        orders: [
+            { id: 8, date: "2026-05-01", items: ["Milk"], status: "Completed" }
+        ]
+    },
+    
+    kypseli: {
+        stock: [
+            { product: "Milk", qty: 35 },
+            { product: "Yogurt", qty: 20 }
+        ],
+        orders: [
+            { id: 9, date: "2026-05-02", items: ["Yogurt"], status: "Pending" }
+        ]
+    },
+
+    pagrati: {
+        stock: [
+            { product: "Milk", qty: 45 },
+            { product: "Yogurt", qty: 25 }
+        ],
+        orders: [
+            { id: 10, date: "2026-05-03", items: ["Milk"], status: "Completed" }
+        ]
+    },
+
+    agioseleftherios: {
+        stock: [
+            { product: "Milk", qty: 20 },
+            { product: "Yogurt", qty: 10 }
+        ],
+        orders: [
+            { id: 11, date: "2026-05-04", items: ["Yogurt"], status: "Pending" }
+        ]
     }
+
 };
 
 let currentReport = null;
