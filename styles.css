@@ -418,4 +418,39 @@ a:hover {
     border-radius: 20px;
     margin-bottom: 10px;
 }
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 220px;
+    height: 100%;
+    background: #0b1f3a;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar h3 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    color: #ddd;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.sidebar a:hover {
+    background: #145da0;
+    color: white;
+}
+
+/* σπρώχνει το content δεξιά */
+.container {
+    margin-left: 240px;
+}
 }

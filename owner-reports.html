@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <meta charset="UTF-8">
 <title>Αναφορές Ιδιοκτήτη</title>
 <link rel="stylesheet" href="styles.css">
@@ -90,7 +91,7 @@
 
     <div id="chartsBox" class="card" style="display:none;">
         <h3>📈 Οπτική Σύνοψη</h3>
-        <div id="chartContent"></div>
+        <canvas id="myChart"></canvas>
     </div>
 
     <a href="welcome.html">← Πίσω</a>
@@ -110,7 +111,7 @@ const storeData = {
         name: "Άνω Γλυφάδα, Γούναρη 35",
         stock: [
             { product: "Milk", qty: 50 },
-            { product: "Bread", qty: 30 }
+            { product: "Yogurt", qty: 30 }
         ],
         orders: [
             { id: 1, date: "2026-04-20", items: ["Milk"], status: "Pending" }
@@ -121,20 +122,20 @@ const storeData = {
         name: "Χαλάνδρι, Πεντέλης 34-36",
         stock: [
             { product: "Milk", qty: 20 },
-            { product: "Cheese", qty: 15 }
+            { product: "Yogurt", qty: 15 }
         ],
         orders: [
-            { id: 2, date: "2026-04-22", items: ["Cheese"], status: "Completed" }
+            { id: 2, date: "2026-04-22", items: ["Yogurt"], status: "Completed" }
         ]
     },
 
     patisia: {
         name: "Πατήσια, Αγίου Μελετίου & Μιχ. Βόδα",
         stock: [
-            { product: "Bread", qty: 60 }
+            { product: "Yogurt", qty: 60 }
         ],
         orders: [
-            { id: 3, date: "2026-04-25", items: ["Bread"], status: "Pending" }
+            { id: 3, date: "2026-04-25", items: ["Yogurt"], status: "Pending" }
         ]
     },
 
@@ -152,7 +153,7 @@ const storeData = {
     agiaparaskevi: {
         name: "Αγία Παρασεκυή, Μεσογείων 387",
         stock: [
-            { product: "Cheese", qty: 40 }
+            { product: "Yogurt", qty: 40 }
         ],
         orders: [
             { id: 5, date: "2026-04-27", items: ["Cheese"], status: "Completed" }
@@ -163,7 +164,7 @@ const storeData = {
         name: "Παιανία, Λαυρίου 149",
         stock: [
             { product: "Milk", qty: 5 },
-            { product: "Bread", qty: 25 }
+            { product: "Yogurt", qty: 25 }
         ],
         orders: [
             { id: 6, date: "2026-04-28", items: ["Milk"], status: "Pending" }
@@ -184,20 +185,20 @@ const storeData = {
         name: "Βύρωνας, Χρυσοστόμου Σμύρνης 114",
         stock: [
             { product: "Milk", qty: 15 },
-            { product: "Cheese", qty: 10 }
+            { product: "Yogurt", qty: 10 }
         ],
         orders: [
-            { id: 8, date: "2026-04-30", items: ["Milk", "Cheese"], status: "Pending" }
+            { id: 8, date: "2026-04-30", items: ["Milk", "Yogurt"], status: "Pending" }
         ]
     },
 
     kypseli: {
         name: "Κυψέλη, Σικίνου 18 & Λέλας Καραγιάννη",
         stock: [
-            { product: "Bread", qty: 45 }
+            { product: "Yogurt", qty: 45 }
         ],
         orders: [
-            { id: 9, date: "2026-05-01", items: ["Bread"], status: "Completed" }
+            { id: 9, date: "2026-05-01", items: ["Yogurt"], status: "Completed" }
         ]
     },
 
@@ -215,10 +216,10 @@ const storeData = {
     agioseleftherios: {
         name: "Άγιος Ελευθέριος, Αχαρνών 380",
         stock: [
-            { product: "Cheese", qty: 35 }
+            { product: "Yogurt", qty: 35 }
         ],
         orders: [
-            { id: 11, date: "2026-05-03", items: ["Cheese"], status: "Completed" }
+            { id: 11, date: "2026-05-03", items: ["Kefir"], status: "Completed" }
         ]
     }
 };
@@ -446,6 +447,24 @@ function renderCharts(store){
 
     document.getElementById("chartContent").innerHTML = html;
 }
+
+function renderChart(){
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Milk', 'Yogurt', 'Kefir'],
+            datasets: [{
+                label: 'Απόθεμα',
+                data: [50, 30, 15]
+            }]
+        }
+    });
+}
+
+renderChart();
 
 </script>
 
