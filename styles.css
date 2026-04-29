@@ -397,9 +397,12 @@ a:hover {
 
 .hero img {
     width: 100%;
+    max-width: 900px;
     height: 260px;
-    object-fit: cover;
-    filter: brightness(0.75);
+    object-fit: contain;
+    background: #000; /* για να μην φαίνεται άδειο */
+    display: block;
+    margin: 0 auto;
 }
 
 .hero-text {
@@ -413,10 +416,12 @@ a:hover {
 
 .banner {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 20px;
-    margin-bottom: 10px;
+    max-width: 900px;
+    height: 240px;
+    object-fit: contain;
+    background: #000;
+    display: block;
+    margin: 0 auto;
 }
 
 .sidebar {
@@ -449,8 +454,43 @@ a:hover {
     color: white;
 }
 
-/* σπρώχνει το content δεξιά */
-.container {
+
+body:has(.sidebar) .container {
     margin-left: 240px;
+    width: calc(100% - 240px);
 }
+
+body:not(:has(.sidebar)) .container {
+    margin-left: 0;
+    width: 100%;
+}
+
+
+body:not(:has(.sidebar)) {
+    overflow-x: hidden;
+}
+
+body:not(:has(.sidebar)) .container {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+body:not(:has(.sidebar)) .menu {
+    width: 100% !important;
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+}
+
+body:not(:has(.sidebar)) .func-btn {
+    min-height: 130px !important;
+}
+
+body:not(:has(.sidebar)) p {
+    text-align: center !important;
+}
+
 }
