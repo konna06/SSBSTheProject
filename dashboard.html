@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard</title>
+<title>Dashboard | SSBS</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -10,13 +10,16 @@
 
 <div class="container">
 
-    <h2>📊 Παραγγελίες και Αποθέματα Καταστήματος</h2>
+    <h2>📈 Dashboard Καταστήματος</h2>
 
-    
+    <p class="muted" style="text-align:center; margin:0;">
+        Συνοπτική εικόνα αποθεμάτων, παραγγελιών και εκκρεμοτήτων
+    </p>
+
     <div class="menu menu-3">
 
         <div class="card kpi">
-            <h3>📦 Αποθέματα</h3>
+            <h3>📦 Απόθεμα</h3>
             <div class="big-number">80</div>
             <p class="muted">Συνολικά διαθέσιμα προϊόντα</p>
         </div>
@@ -30,38 +33,33 @@
         <div class="card kpi alert">
             <h3>⚠️ Εκκρεμότητες</h3>
             <div class="big-number">1</div>
-            <p class="muted">Χρειάζονται ενέργεια</p>
+            <p class="muted">Χρειάζεται ενέργεια</p>
         </div>
 
     </div>
 
-   
     <div class="menu menu-2">
 
-        
         <div class="card">
             <h3>📦 Απόθεμα προϊόντων</h3>
 
             <div class="row">
                 <span>Milk</span>
-                <span class="tag good">50</span>
+                <span class="tag good">50 τεμ.</span>
             </div>
 
             <div class="row">
                 <span>Yogurt</span>
-                <span class="tag warning">30</span>
+                <span class="tag warning">30 τεμ.</span>
             </div>
         </div>
 
-       
         <div class="card">
             <h3>🧾 Παραγγελίες</h3>
-
             <div id="ordersList"></div>
         </div>
 
     </div>
-
 
     <div class="menu menu-1">
 
@@ -71,28 +69,33 @@
             <p><strong>ID:</strong> <span id="orderId"></span></p>
             <p><strong>Ημερομηνία:</strong> <span id="orderDate"></span></p>
 
-            <h4>Προϊόντα:</h4>
+            <h4>Προϊόντα</h4>
             <div id="orderProducts"></div>
         </div>
 
     </div>
 
-
     <div class="menu menu-1">
 
         <div class="card highlight">
             <h3>⚡ Γρήγορες Ενέργειες</h3>
+            <p class="muted">Εξαγωγή δεδομένων για έλεγχο ή αποθήκευση.</p>
             <button onclick="exportData()">Εξαγωγή Δεδομένων</button>
         </div>
 
     </div>
 
-    <a href="welcome.html">← Πίσω</a>
+    <a href="welcome.html">← Πίσω στο μενού</a>
 
 </div>
 
 <script>
 
+const role = localStorage.getItem("role");
+
+if(role !== "manager"){
+    window.location.href = "welcome.html";
+}
 
 const orders = [
     {
@@ -109,11 +112,11 @@ const orders = [
         date: "2026-04-27",
         status: "Completed",
         products: [
-            { name: "Milk", qty: 20 }
+            { name: "Milk", qty: 20 },
+            { name: "Yogurt", qty: 10 }
         ]
     }
 ];
-
 
 const ordersList = document.getElementById("ordersList");
 
@@ -123,9 +126,9 @@ orders.forEach(order => {
     div.className = "row clickable";
 
     div.innerHTML = `
-        <span>#${order.id}</span>
+        <span>Παραγγελία #${order.id}</span>
         <span class="tag ${order.status === 'Pending' ? 'pending' : 'done'}">
-            ${order.status}
+            ${order.status === "Pending" ? "Εκκρεμεί" : "Ολοκληρώθηκε"}
         </span>
     `;
 
@@ -133,7 +136,6 @@ orders.forEach(order => {
 
     ordersList.appendChild(div);
 });
-
 
 function showOrder(order){
 
@@ -150,14 +152,14 @@ function showOrder(order){
         row.className = "row";
         row.innerHTML = `
             <span>${p.name}</span>
-            <span>${p.qty}</span>
+            <span class="tag">${p.qty} τεμ.</span>
         `;
         productsBox.appendChild(row);
     });
 }
 
 function exportData(){
-    alert("Εξαγωγή δεδομένων...");
+    alert("Η εξαγωγή δεδομένων ξεκίνησε.");
 }
 
 </script>

@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>Welcome</title>
+<title>Welcome | SSBS</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,9 +13,13 @@
 
     <h1 id="welcomeText"></h1>
 
+    <p class="muted" style="text-align:center; margin:0;">
+        Επιλέξτε διαθέσιμη λειτουργία από το μενού
+    </p>
+
     <div class="menu" id="menu"></div>
 
-    <button onclick="logout()">Logout</button>
+    <button onclick="logout()" style="max-width:260px;">Αποσύνδεση</button>
 
 </div>
 
@@ -28,30 +32,34 @@ if(!user || !role){
     window.location.href = "index.html";
 }
 
-welcomeText.innerText = "Καλώς ήρθες, " + user;
+document.getElementById("welcomeText").innerText = "Καλώς ήρθες, " + user;
 
 const menu = document.getElementById("menu");
 
-
-
 if(role === "employee"){
     menu.innerHTML = `
-        <a href="draft-order.html">📦 Πρόχειρη Παραγγελία</a>
-        <a href="inventory.html">📊 Μεταβολές Αποθεμάτων</a>
+        <a href="draft-order.html">📦 Δημιουργία Παραγγελίας</a>
+        <a href="inventory.html">📊 Διαχείριση Αποθέματος</a>
     `;
 }
 
 else if(role === "manager"){
     menu.innerHTML = `
         <a href="review-order.html">📝 Έλεγχος Παραγγελίας</a>
-        <a href="dashboard.html">📈 Dashboard</a>
-        <a href="inventory.html">📊 Αποθέματα</a>
+        <a href="dashboard.html">📈 Dashboard Καταστήματος</a>
+        <a href="inventory.html">📊 Διαχείριση Αποθέματος</a>
     `;
 }
 
 else if(role === "supplier"){
     menu.innerHTML = `
-        <a href="supplier.html">🚚 Τροφοδοσία Παραγγελίας</a>
+        <a href="supplier.html">🚚 Τροφοδοσία Καταστήματος</a>
+    `;
+}
+
+else if(role === "owner"){
+    menu.innerHTML = `
+        <a href="owner-reports.html">📊 Αναφορές Καταστημάτων</a>
     `;
 }
 

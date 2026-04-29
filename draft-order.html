@@ -1,33 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>Draft Order</title>
+<title>Δημιουργία Παραγγελίας</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="container">
 
-<h2>Πρόχειρη Παραγγελία</h2>
+<h2>📦 Δημιουργία Παραγγελίας</h2>
 
-<div id="access"></div>
+<p class="muted" style="text-align:center;">
+Συμπληρώστε προϊόν και ποσότητα
+</p>
 
-<input type="text" placeholder="Προϊόν">
-<input type="number" placeholder="Ποσότητα">
+<input type="text" id="product" placeholder="Όνομα προϊόντος">
+<input type="number" id="qty" placeholder="Ποσότητα">
 
-<button>Αποθήκευση</button>
+<button onclick="saveOrder()">Αποθήκευση</button>
 
-<a href="welcome.html">Πίσω</a>
+<a href="welcome.html">← Πίσω</a>
 
 </div>
 
 <script>
 
-const role = localStorage.getItem("role");
-
-if(role !== "employee"){
+if(localStorage.getItem("role") !== "employee"){
     window.location.href = "welcome.html";
+}
+
+function saveOrder(){
+
+    const p = document.getElementById("product").value;
+    const q = document.getElementById("qty").value;
+
+    if(!p || !q){
+        return alert("Συμπλήρωσε όλα τα πεδία");
+    }
+
+    alert("Η παραγγελία αποθηκεύτηκε!");
 }
 
 </script>

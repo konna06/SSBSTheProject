@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>System Portal</title>
+<title>SSBS Portal</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -12,28 +12,28 @@
 
     <img src="assets/galaktopoleio-logo-18a41922.png" class="logo">
 
-    <h1>Smart Stock Barcode System - SSBS</h1>
+    <h1>Smart Stock Management System</h1>
 
-    <p style="text-align:center; margin:0;">
-        Επιλέξτε λειτουργία για να συνεχίσετε
+    <p style="text-align:center; margin:0;" class="muted">
+        Διαχείριση αποθεμάτων & παραγγελιών καταστήματος
     </p>
 
-    
     <div class="menu">
-        <button class="func-btn" onclick="selectFunction('reports', this)">📊 Προβολή Αναφορών</button>
-        <button class="func-btn" onclick="selectFunction('draft', this)">📦 Πρόχειρη Παραγγελία</button>
+
+        <button class="func-btn" onclick="selectFunction('reports', this)">📊 Αναφορές Ιδιοκτήτη</button>
+        <button class="func-btn" onclick="selectFunction('draft', this)">📦 Δημιουργία Παραγγελίας</button>
         <button class="func-btn" onclick="selectFunction('review', this)">📝 Έλεγχος Παραγγελίας</button>
-        <button class="func-btn" onclick="selectFunction('inventory', this)">📊 Μεταβολές Αποθεμάτων</button>
-        <button class="func-btn" onclick="selectFunction('supplier', this)">🚚 Τροφοδοσία Καταστήματος</button>
-        <button class="func-btn" onclick="selectFunction('dashboard', this)">📈 Προβολή Παραγγελιών</button>
+        <button class="func-btn" onclick="selectFunction('inventory', this)">📊 Διαχείριση Αποθέματος</button>
+        <button class="func-btn" onclick="selectFunction('supplier', this)">🚚 Τροφοδοσία</button>
+        <button class="func-btn" onclick="selectFunction('dashboard', this)">📈 Dashboard</button>
 
     </div>
 
-    <div id="loginBox" class="card" style="display:none; margin-top:20px; max-width:500px;">
+    <div id="loginBox" class="card" style="display:none; max-width:500px; margin-top:10px;">
 
-        <h3 id="selectedText" style="text-align:center; color:#0d47a1;"></h3>
+        <h3 id="selectedText" style="text-align:center;"></h3>
 
-        <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
 
             <input type="text" id="username" placeholder="Username">
             <input type="password" id="password" placeholder="Password">
@@ -46,7 +46,7 @@
                 <option value="owner">Ιδιοκτήτης</option>
             </select>
 
-            <button onclick="login()">Login</button>
+            <button onclick="login()">Σύνδεση</button>
 
             <p id="error"></p>
 
@@ -60,14 +60,12 @@
 
 let selectedFunction = null;
 
-
 const users = {
     "owner1": { password: "0000", role: "owner" },
     "manager1": { password: "1111", role: "manager" },
     "employee1": { password: "2222", role: "employee" },
     "supplier1": { password: "3333", role: "supplier" }
 };
-
 
 const access = {
     draft: ["employee"],
@@ -78,30 +76,27 @@ const access = {
     reports: ["owner"]
 };
 
-
 function selectFunction(func, el){
 
     selectedFunction = func;
 
-   
     document.querySelectorAll(".func-btn").forEach(btn => btn.classList.remove("active"));
     el.classList.add("active");
 
     document.getElementById("loginBox").style.display = "block";
 
     const titles = {
-        draft: "Πρόχειρη Παραγγελία",
+        draft: "Δημιουργία Παραγγελίας",
         review: "Έλεγχος Παραγγελίας",
-        inventory: "Μεταβολές Αποθεμάτων",
-        supplier: "Τροφοδοσία Καταστήματος",
-        dashboard: "Προβολή Παραγγελιών",
-        reports: "Προβολή Αναφορών"
+        inventory: "Διαχείριση Αποθέματος",
+        supplier: "Τροφοδοσία",
+        dashboard: "Dashboard",
+        reports: "Αναφορές Ιδιοκτήτη"
     };
 
     document.getElementById("selectedText").innerText =
         "Σύνδεση για: " + titles[func];
 }
-
 
 function login(){
 
@@ -111,8 +106,6 @@ function login(){
 
     const errorBox = document.getElementById("error");
     errorBox.innerText = "";
-
-    if(selectedFunction === "reports") location.href = "owner-reports.html";
 
     if(!selectedFunction){
         return errorBox.innerText = "Επίλεξε λειτουργία πρώτα";
@@ -131,7 +124,7 @@ function login(){
     }
 
     if(!access[selectedFunction].includes(r)){
-        return errorBox.innerText = "Δεν έχεις πρόσβαση σε αυτή τη λειτουργία";
+        return errorBox.innerText = "Δεν έχεις πρόσβαση";
     }
 
     localStorage.setItem("user", u);
@@ -142,6 +135,7 @@ function login(){
     if(selectedFunction === "inventory") location.href = "inventory.html";
     if(selectedFunction === "supplier") location.href = "supplier.html";
     if(selectedFunction === "dashboard") location.href = "dashboard.html";
+    if(selectedFunction === "reports") location.href = "owner-reports.html";
 }
 
 </script>

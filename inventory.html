@@ -2,41 +2,27 @@
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>Inventory</title>
+<title>Αποθέματα</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="container">
 
-<h2>Μεταβολές Αποθέματος</h2>
+<h2>📊 Διαχείριση Αποθέματος</h2>
 
-<div id="access"></div>
-
-<select id="typeSelect">
-    <option value="">-- Επιλογή Ενέργειας --</option>
+<select id="type">
+    <option value="">-- Ενέργεια --</option>
     <option value="sale">Πώληση</option>
     <option value="purchase">Αγορά</option>
-    <option value="damage">Φθορά</option>
-    <option value="return">Επιστροφή</option>
 </select>
 
-<select id="modeSelect" onchange="toggleMode()">
-    <option value="">-- Τρόπος Εισαγωγής --</option>
-    <option value="scan">📷 Σάρωση</option>
-    <option value="manual">⌨ Χειροκίνητα</option>
-</select>
+<input type="text" id="product" placeholder="Προϊόν">
+<input type="number" id="qty" placeholder="Ποσότητα">
 
-<button id="scanBtn" style="display:none;" onclick="scanProduct()">📷 Scan</button>
+<button onclick="submitData()">Καταχώρηση</button>
 
-<div id="manualBox" style="display:none; width:100%; flex-direction:column; gap:12px;">
-    <input type="text" id="productCode" placeholder="Κωδικός">
-    <input type="number" id="qty" placeholder="Ποσότητα">
-</div>
-
-<button onclick="submitMovement()">Καταχώρηση</button>
-
-<a href="welcome.html">Πίσω</a>
+<a href="welcome.html">← Πίσω</a>
 
 </div>
 
@@ -48,33 +34,17 @@ if(role !== "employee" && role !== "manager"){
     window.location.href = "welcome.html";
 }
 
-function toggleMode(){
-    const mode = document.getElementById("modeSelect").value;
-    document.getElementById("scanBtn").style.display = (mode === "scan") ? "block" : "none";
-    document.getElementById("manualBox").style.display = (mode === "manual") ? "flex" : "none";
-}
+function submitData(){
 
-function scanProduct(){
-    const code = prompt("Barcode:");
-    if(code){
-        document.getElementById("productCode").value = code;
-        document.getElementById("qty").value = prompt("Ποσότητα:");
-    }
-}
+    const t = document.getElementById("type").value;
+    const p = document.getElementById("product").value;
+    const q = document.getElementById("qty").value;
 
-function submitMovement(){
-
-    const type = document.getElementById("typeSelect").value;
-    const mode = document.getElementById("modeSelect").value;
-    const product = document.getElementById("productCode").value;
-    const qty = document.getElementById("qty").value;
-
-    if(!type || !mode || !product || !qty){
-        alert("Συμπλήρωσε όλα τα πεδία");
-        return;
+    if(!t || !p || !q){
+        return alert("Συμπλήρωσε όλα τα πεδία");
     }
 
-    alert("Καταχωρήθηκε επιτυχώς!");
+    alert("Η ενέργεια καταχωρήθηκε!");
 }
 
 </script>

@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>Supplier</title>
+<title>Προμηθευτής</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="container">
 
-<h2>Προμηθευτής</h2>
-
-<div id="access"></div>
+<h2>🚚 Τροφοδοσία Καταστήματος</h2>
 
 <table>
-<tr><th>Store</th><th>Product</th><th>Qty</th></tr>
-<tr><td>A</td><td>Milk</td><td>20</td></tr>
+<tr><th>Κατάστημα</th><th>Προϊόν</th><th>Ποσότητα</th></tr>
+<tr><td>Άνω Γλυφάδα, Γούναρη 35</td><td>Milk</td><td>20</td></tr>
+<tr><td>Χαλάνδρι, Πεντέλης 34-36</td><td>Yogurt</td><td>10</td></tr>
+<tr><td>Παγκράτι, Φιλολάου 87</td><td>Icecream</td><td>15</td></tr>
+<tr><td>Πατήσια, Αγίου Μελετίου & Μιχ. Βόδα </td><td>Milk</td><td>25</td></tr>
+<tr><td>Πατήσια, Αγίου Μελετίου & Μιχ. Βόδα</td><td>Kefir</td><td>30</td></tr>
 </table>
 
-<button>Τροφοδοσία</button>
+<button onclick="supply()">Εκτέλεση Τροφοδοσίας</button>
 
-<a href="welcome.html">Πίσω</a>
+<a href="welcome.html">← Πίσω</a>
 
 </div>
 
@@ -28,6 +30,10 @@
 
 if(localStorage.getItem("role") !== "supplier"){
     window.location.href = "welcome.html";
+}
+
+function supply(){
+    alert("Η τροφοδοσία ολοκληρώθηκε!");
 }
 
 </script>

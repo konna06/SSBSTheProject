@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>Owner Reports</title>
+<title>Αναφορές Ιδιοκτήτη</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -10,7 +10,11 @@
 
 <div class="container">
 
-    <h2>Γενικές αναφορές καταστημάτων</h2>
+    <h2>📊 Αναφορές Καταστημάτων</h2>
+
+    <p class="muted" style="text-align:center;">
+        Επιλέξτε κατάστημα και δείτε αποθέματα, παραγγελίες και συνολική εικόνα.
+    </p>
 
     <div class="card">
         <h3>🏪 Επιλογή Καταστήματος</h3>
@@ -18,10 +22,10 @@
         <select id="storeSelect" onchange="resetView()">
             <option value="">-- Επιλογή Καταστήματος --</option>
             <option value="glyfada">Άνω Γλυφάδα, Γούναρη 35</option>
-            <option value="xolargos">Χολαργός, Μεσογείων 188</option>
             <option value="xalandri">Χαλάνδρι, Πεντέλης 34-36</option>
-            <option value="patisia">Πατήσια, Αγίου Μελετίου & Μιχ. Βόδα 164</option>
-            <option value="agiaparaskevi">Αγία Παρασκευή, Μεσογείων 387</option>
+            <option value="patisia">Πατήσια, Αγίου Μελετίου & Μιχ. Βόδα"</option>
+            <option value="xolargos">Χολαργός, Μεσογείων 188</option>
+            <option value="agiaparaskevi">Αγία Παρασεκυή, Μεσογείων 387</option>
             <option value="paiania">Παιανία, Λαυρίου 149</option>
             <option value="palaiofaliro">Παλαιό Φάληρο, Ζησιμοπούλου 93</option>
             <option value="vyronas">Βύρωνας, Χρυσοστόμου Σμύρνης 114</option>
@@ -31,9 +35,8 @@
         </select>
     </div>
 
-  
     <div id="step1" class="card">
-        <h3>1️⃣ Προβολή Αναφορών</h3>
+        <h3>1️⃣ Επιλογή Αναφοράς</h3>
 
         <div class="menu menu-2">
             <button onclick="loadReport('stock')">📦 Αποθέματα</button>
@@ -41,7 +44,6 @@
         </div>
     </div>
 
-    
     <div id="step2" class="card" style="display:none;">
         <h3>2️⃣ Αναλυτικά Δεδομένα</h3>
         <div id="reportContent"></div>
@@ -60,13 +62,37 @@
         <div id="filteredResults" style="margin-top:15px;"></div>
     </div>
 
-  
     <div id="step4" class="card highlight" style="display:none;">
         <h3>4️⃣ Συνολική Εικόνα</h3>
+
+        <div class="menu menu-3">
+            <div class="card kpi">
+                <h3>📦 Απόθεμα</h3>
+                <div class="big-number" id="totalStockBox">0</div>
+                <p class="muted">Συνολικές μονάδες</p>
+            </div>
+
+            <div class="card kpi">
+                <h3>🧾 Παραγγελίες</h3>
+                <div class="big-number" id="ordersBox">0</div>
+                <p class="muted">Συνολικές παραγγελίες</p>
+            </div>
+
+            <div class="card kpi alert">
+                <h3>⚠️ Εκκρεμείς</h3>
+                <div class="big-number" id="pendingBox">0</div>
+                <p class="muted">Χρειάζονται έλεγχο</p>
+            </div>
+        </div>
+
         <div id="statusOverview"></div>
     </div>
 
-    <br>
+    <div id="chartsBox" class="card" style="display:none;">
+        <h3>📈 Οπτική Σύνοψη</h3>
+        <div id="chartContent"></div>
+    </div>
+
     <a href="welcome.html">← Πίσω</a>
 
 </div>
@@ -75,132 +101,126 @@
 
 const role = localStorage.getItem("role");
 
-
 if(role !== "owner"){
     window.location.href = "welcome.html";
 }
 
-
 const storeData = {
     glyfada: {
+        name: "Άνω Γλυφάδα, Γούναρη 35",
         stock: [
             { product: "Milk", qty: 50 },
-            { product: "Yogurt", qty: 30 }
+            { product: "Bread", qty: 30 }
         ],
         orders: [
             { id: 1, date: "2026-04-20", items: ["Milk"], status: "Pending" }
         ]
     },
 
-    xolargos: {
+    xalandri: {
+        name: "Χαλάνδρι, Πεντέλης 34-36",
         stock: [
             { product: "Milk", qty: 20 },
-            { product: "Yogurt", qty: 15 }
+            { product: "Cheese", qty: 15 }
         ],
         orders: [
             { id: 2, date: "2026-04-22", items: ["Cheese"], status: "Completed" }
         ]
     },
 
-    xalandri: {
+    patisia: {
+        name: "Πατήσια, Αγίου Μελετίου & Μιχ. Βόδα",
         stock: [
-            { product: "Yogurt", qty: 25 }
+            { product: "Bread", qty: 60 }
         ],
         orders: [
             { id: 3, date: "2026-04-25", items: ["Bread"], status: "Pending" }
         ]
     },
 
-    patisia: {
+    xolargos: {
+        name: "Χολαργός, Μεσογείων 188",
         stock: [
             { product: "Milk", qty: 10 },
             { product: "Yogurt", qty: 5 }
         ],
         orders: [
-            { id: 4, date: "2026-04-27", items: ["Milk", "Yogurt"], status: "Completed" }
-        ]
-    },
-
-    xolargos: {
-        stock: [
-            { product: "Milk", qty: 20 },
-            { product: "Yogurt", qty: 15 }
-        ],
-        orders: [
-            { id: 2, date: "2026-04-22", items: ["Cheese"], status: "Completed" }
+            { id: 4, date: "2026-04-26", items: ["Milk", "Yogurt"], status: "Pending" }
         ]
     },
 
     agiaparaskevi: {
+        name: "Αγία Παρασεκυή, Μεσογείων 387",
         stock: [
-            { product: "Milk", qty: 40 },
-            { product: "Yogurt", qty: 20 }
+            { product: "Cheese", qty: 40 }
         ],
         orders: [
-            { id: 5, date: "2026-04-28", items: ["Yogurt"], status: "Pending" }
+            { id: 5, date: "2026-04-27", items: ["Cheese"], status: "Completed" }
         ]
     },
 
     paiania: {
+        name: "Παιανία, Λαυρίου 149",
         stock: [
-            { product: "Milk", qty: 30 },
-            { product: "Yogurt", qty: 10 }
+            { product: "Milk", qty: 5 },
+            { product: "Bread", qty: 25 }
         ],
         orders: [
-            { id: 6, date: "2026-04-29", items: ["Milk"], status: "Completed" }
+            { id: 6, date: "2026-04-28", items: ["Milk"], status: "Pending" }
         ]
     },
 
     palaiofaliro: {
+        name: "Παλαιό Φάληρο, Ζησιμοπούλου 93",
         stock: [
-            { product: "Milk", qty: 15 },
-            { product: "Yogurt", qty: 5 }
+            { product: "Yogurt", qty: 30 }
         ],
         orders: [
-            { id: 7, date: "2026-04-30", items: ["Yogurt"], status: "Pending" }
+            { id: 7, date: "2026-04-29", items: ["Yogurt"], status: "Completed" }
         ]
     },
 
     vyronas: {
+        name: "Βύρωνας, Χρυσοστόμου Σμύρνης 114",
         stock: [
-            { product: "Milk", qty: 25 },
-            { product: "Yogurt", qty: 10 }
+            { product: "Milk", qty: 15 },
+            { product: "Cheese", qty: 10 }
         ],
         orders: [
-            { id: 8, date: "2026-05-01", items: ["Milk"], status: "Completed" }
+            { id: 8, date: "2026-04-30", items: ["Milk", "Cheese"], status: "Pending" }
         ]
     },
-    
+
     kypseli: {
+        name: "Κυψέλη, Σικίνου 18 & Λέλας Καραγιάννη",
         stock: [
-            { product: "Milk", qty: 35 },
-            { product: "Yogurt", qty: 20 }
+            { product: "Bread", qty: 45 }
         ],
         orders: [
-            { id: 9, date: "2026-05-02", items: ["Yogurt"], status: "Pending" }
+            { id: 9, date: "2026-05-01", items: ["Bread"], status: "Completed" }
         ]
     },
 
     pagrati: {
+        name: "Παγκράτι, Φιλολάου 87",
         stock: [
-            { product: "Milk", qty: 45 },
-            { product: "Yogurt", qty: 25 }
+            { product: "Milk", qty: 25 },
+            { product: "Yogurt", qty: 20 }
         ],
         orders: [
-            { id: 10, date: "2026-05-03", items: ["Milk"], status: "Completed" }
+            { id: 10, date: "2026-05-02", items: ["Milk", "Yogurt"], status: "Pending" }
         ]
     },
 
     agioseleftherios: {
+        name: "Άγιος Ελευθέριος, Αχαρνών 380",
         stock: [
-            { product: "Milk", qty: 20 },
-            { product: "Yogurt", qty: 10 }
+            { product: "Cheese", qty: 35 }
         ],
         orders: [
-            { id: 11, date: "2026-05-04", items: ["Yogurt"], status: "Pending" }
+            { id: 11, date: "2026-05-03", items: ["Cheese"], status: "Completed" }
         ]
     }
-
 };
 
 let currentReport = null;
@@ -209,17 +229,20 @@ function getStore(){
     return document.getElementById("storeSelect").value;
 }
 
-
 function resetView(){
     document.getElementById("step2").style.display = "none";
     document.getElementById("step3").style.display = "none";
     document.getElementById("step4").style.display = "none";
+    document.getElementById("chartsBox").style.display = "none";
+    document.getElementById("filterSelect").value = "";
+    document.getElementById("filteredResults").innerHTML = "";
+    currentReport = null;
 }
-
 
 function loadReport(type){
 
     const store = getStore();
+
     if(!store){
         alert("Επίλεξε κατάστημα πρώτα");
         return;
@@ -230,6 +253,7 @@ function loadReport(type){
     document.getElementById("step2").style.display = "block";
     document.getElementById("step3").style.display = "block";
     document.getElementById("step4").style.display = "block";
+    document.getElementById("chartsBox").style.display = "block";
 
     if(type === "stock"){
         renderStock(store);
@@ -238,38 +262,24 @@ function loadReport(type){
     }
 
     renderOverview(store);
+    renderCharts(store);
 }
-
 
 function renderStock(store){
 
     const data = storeData[store].stock;
 
-    let html = "<table><tr><th>Προϊόν</th><th>Ποσότητα</th></tr>";
+    let html = "<table><tr><th>Προϊόν</th><th>Ποσότητα</th><th>Κατάσταση</th></tr>";
 
     data.forEach(p => {
-        html += `<tr><td>${p.product}</td><td>${p.qty}</td></tr>`;
-    });
+        const status = p.qty < 25 ? "Χαμηλό Απόθεμα" : "Επαρκές Απόθεμα";
+        const tagClass = p.qty < 25 ? "warning" : "good";
 
-    html += "</table>";
-
-    document.getElementById("reportContent").innerHTML = html;
-}
-
-
-function renderOrders(store){
-
-    const data = storeData[store].orders;
-
-    let html = "<table><tr><th>ID</th><th>Ημερομηνία</th><th>Προϊόντα</th><th>Status</th></tr>";
-
-    data.forEach(o => {
         html += `
         <tr>
-            <td>${o.id}</td>
-            <td>${o.date}</td>
-            <td>${o.items.join(", ")}</td>
-            <td>${o.status}</td>
+            <td>${p.product}</td>
+            <td>${p.qty}</td>
+            <td><span class="tag ${tagClass}">${status}</span></td>
         </tr>`;
     });
 
@@ -278,11 +288,39 @@ function renderOrders(store){
     document.getElementById("reportContent").innerHTML = html;
 }
 
+function renderOrders(store){
+
+    const data = storeData[store].orders;
+
+    let html = "<table><tr><th>ID</th><th>Ημερομηνία</th><th>Προϊόντα</th><th>Status</th></tr>";
+
+    data.forEach(o => {
+        const tagClass = o.status === "Pending" ? "pending" : "done";
+        const statusText = o.status === "Pending" ? "Εκκρεμεί" : "Ολοκληρώθηκε";
+
+        html += `
+        <tr>
+            <td>#${o.id}</td>
+            <td>${o.date}</td>
+            <td>${o.items.join(", ")}</td>
+            <td><span class="tag ${tagClass}">${statusText}</span></td>
+        </tr>`;
+    });
+
+    html += "</table>";
+
+    document.getElementById("reportContent").innerHTML = html;
+}
 
 function applyFilter(){
 
     const store = getStore();
     const f = document.getElementById("filterSelect").value;
+
+    if(!store || !currentReport){
+        alert("Επίλεξε πρώτα αναφορά");
+        return;
+    }
 
     let result = [];
 
@@ -296,10 +334,22 @@ function applyFilter(){
             result = data;
         }
 
+        if(result.length === 0){
+            document.getElementById("filteredResults").innerHTML =
+                `<p class="muted">Δεν υπάρχουν αποτελέσματα για αυτό το φίλτρο.</p>`;
+            return;
+        }
+
         document.getElementById("filteredResults").innerHTML =
-            result.map(p =>
-                `<div class="row"><span>${p.product}</span><span class="tag">${p.qty}</span></div>`
-            ).join("");
+            result.map(p => {
+                const tagClass = p.qty < 25 ? "warning" : "good";
+
+                return `
+                <div class="row">
+                    <span>${p.product}</span>
+                    <span class="tag ${tagClass}">${p.qty} τεμ.</span>
+                </div>`;
+            }).join("");
     }
 
     if(currentReport === "orders"){
@@ -313,27 +363,88 @@ function applyFilter(){
         }
 
         document.getElementById("filteredResults").innerHTML =
-            result.map(o =>
-                `<div class="row"><span>#${o.id} - ${o.date}</span><span class="tag">${o.status}</span></div>`
-            ).join("");
+            result.map(o => {
+                const tagClass = o.status === "Pending" ? "pending" : "done";
+                const statusText = o.status === "Pending" ? "Εκκρεμεί" : "Ολοκληρώθηκε";
+
+                return `
+                <div class="row">
+                    <span>#${o.id} - ${o.date}</span>
+                    <span class="tag ${tagClass}">${statusText}</span>
+                </div>`;
+            }).join("");
     }
 }
-
 
 function renderOverview(store){
 
     const data = storeData[store];
 
-    const totalStock = data.stock.reduce((a,b)=>a+b.qty,0);
+    const totalStock = data.stock.reduce((a,b) => a + b.qty, 0);
     const orders = data.orders.length;
-    const pending = data.orders.filter(o=>o.status==="Pending").length;
+    const pending = data.orders.filter(o => o.status === "Pending").length;
+
+    document.getElementById("totalStockBox").innerText = totalStock;
+    document.getElementById("ordersBox").innerText = orders;
+    document.getElementById("pendingBox").innerText = pending;
 
     document.getElementById("statusOverview").innerHTML = `
-        <p>🏪 Κατάστημα: <b>${store}</b></p>
-        <p>📦 Σύνολο αποθεμάτων: <b>${totalStock}</b></p>
-        <p>🧾 Παραγγελίες: <b>${orders}</b></p>
-        <p>⚠️ Εκκρεμείς: <b>${pending}</b></p>
+        <p>🏪 Κατάστημα: <b>${data.name}</b></p>
+        <p>📦 Συνολικό απόθεμα: <b>${totalStock}</b> τεμάχια</p>
+        <p>🧾 Σύνολο παραγγελιών: <b>${orders}</b></p>
+        <p>⚠️ Εκκρεμείς παραγγελίες: <b>${pending}</b></p>
     `;
+}
+
+function renderCharts(store){
+
+    const data = storeData[store];
+    const stock = data.stock;
+    const maxQty = Math.max(...stock.map(p => p.qty));
+
+    let html = `
+        <h4>Απόθεμα ανά προϊόν</h4>
+        <div style="display:flex; flex-direction:column; gap:14px;">`;
+
+    stock.forEach(p => {
+        const width = (p.qty / maxQty) * 100;
+        const barColor = p.qty < 25 ? "#c62828" : "#145da0";
+
+        html += `
+        <div>
+            <div class="row" style="border-bottom:none; padding:0 0 6px 0;">
+                <span><b>${p.product}</b></span>
+                <span>${p.qty} τεμ.</span>
+            </div>
+
+            <div style="width:100%; height:14px; background:#edf1f7; border-radius:999px; overflow:hidden;">
+                <div style="width:${width}%; height:100%; background:${barColor}; border-radius:999px;"></div>
+            </div>
+        </div>`;
+    });
+
+    html += `</div>`;
+
+    const completed = data.orders.filter(o => o.status === "Completed").length;
+    const pending = data.orders.filter(o => o.status === "Pending").length;
+
+    html += `
+        <h4 style="margin-top:25px;">Κατάσταση παραγγελιών</h4>
+
+        <div class="menu menu-2">
+            <div class="card">
+                <h3>✅ Ολοκληρωμένες</h3>
+                <div class="big-number">${completed}</div>
+            </div>
+
+            <div class="card alert">
+                <h3>⚠️ Εκκρεμείς</h3>
+                <div class="big-number">${pending}</div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("chartContent").innerHTML = html;
 }
 
 </script>
