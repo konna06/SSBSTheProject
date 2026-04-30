@@ -5,31 +5,38 @@
 <title>Έλεγχος Παραγγελίας</title>
 <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
 <div class="sidebar">
-    <h3>SSBS</h3>
+    <h2>SSBS</h2>
     <a href="welcome.html">🏠 Μενού</a>
-    <a href="dashboard.html">📈 Dashboard</a>
-    <a href="inventory.html">📦 Απόθεμα</a>
-    <a href="draft-order.html">📦 Παραγγελία</a>
-    <a href="review-order.html">📝 Έλεγχος</a>
-    <a href="supplier.html">🚚 Τροφοδοσία</a>
-    <a href="owner-reports.html">📊 Αναφορές</a>
 </div>
 
 <div class="container">
 
-<h2>📝 Έλεγχος Παραγγελίας</h2>
+<h2>Έλεγχος Παραγγελίας</h2>
 
-<table>
-<tr><th>Προϊόν</th><th>Ποσότητα</th></tr>
-<tr><td>Milk</td><td>10</td></tr>
-<tr><td>Yogurt</td><td>5</td></tr>
+<table id="orderTable">
+<tr>
+    <th>Προϊόν</th>
+    <th>Ποσότητα</th>
+    <th>Ενέργεια</th>
+</tr>
 </table>
 
-<div style="display:flex; gap:10px;">
+<div class="card">
+    <h3>➕ Προσθήκη Προϊόντος</h3>
 
+    <input type="text" id="newProduct" placeholder="Όνομα προϊόντος">
+    <input type="number" id="newQty" placeholder="Ποσότητα">
+
+    <button onclick="addProduct()">Προσθήκη</button>
+</div>
+
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+<button onclick="saveOrder()">💾 Αποθήκευση</button>
 <button onclick="approve()">✔ Έγκριση</button>
 <button onclick="reject()" style="background:red;">✖ Απόρριψη</button>
 
@@ -45,8 +52,80 @@ if(localStorage.getItem("role") !== "manager"){
     window.location.href = "welcome.html";
 }
 
+let order = [
+    { product: "Milk", qty: 10 },
+    { product: "Yogurt", qty: 5 }
+];
+
+renderTable();
+
+function renderTable(){
+
+    const table = document.getElementById("orderTable");
+
+    table.innerHTML = `
+        <tr>
+            <th>Προϊόν</th>
+            <th>Ποσότητα</th>
+            <th>Ενέργεια</th>
+        </tr>
+    `;
+
+    order.forEach((item, index) => {
+
+        table.innerHTML += `
+        <tr>
+            <td>${item.product}</td>
+            <td>
+                <input type="number" value="${item.qty}" 
+                       onchange="updateQty(${index}, this.value)">
+            </td>
+            <td>
+                <button onclick="removeItem(${index})" style="background:red;">✖</button>
+            </td>
+        </tr>`;
+    });
+}
+
+function updateQty(index, value){
+    order[index].qty = Number(value);
+}
+
+function removeItem(index){
+    order.splice(index,1);
+    renderTable();
+}
+
+function addProduct(){
+
+    const product = document.getElementById("newProduct").value.trim();
+    const qty = document.getElementById("newQty").value;
+
+    if(!product || !qty){
+        alert("Συμπλήρωσε όλα τα πεδία");
+        return;
+    }
+
+    order.push({ product, qty: Number(qty) });
+
+    document.getElementById("newProduct").value = "";
+    document.getElementById("newQty").value = "";
+
+    renderTable();
+}
+
+function saveOrder(){
+    localStorage.setItem("currentOrder", JSON.stringify(order));
+    alert("Αποθηκεύτηκε!");
+}
+
 function approve(){
-    alert("Η παραγγελία εγκρίθηκε");
+
+    const saved = JSON.stringify(order);
+
+    console.log("Approved Order:", saved);
+
+    alert("Η παραγγελία εγκρίθηκε με τις αλλαγές!");
 }
 
 function reject(){

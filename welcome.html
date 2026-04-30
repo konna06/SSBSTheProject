@@ -8,14 +8,7 @@
 <body>
 
 <div class="sidebar">
-    <h3>SSBS</h3>
-    <a href="welcome.html">🏠 Μενού</a>
-    <a href="dashboard.html">📈 Dashboard</a>
-    <a href="inventory.html">📦 Απόθεμα</a>
-    <a href="draft-order.html">📦 Παραγγελία</a>
-    <a href="review-order.html">📝 Έλεγχος</a>
-    <a href="supplier.html">🚚 Τροφοδοσία</a>
-    <a href="owner-reports.html">📊 Αναφορές</a>
+    <h2>SSBS</h2>
 </div>
 
 <div class="container">
@@ -49,28 +42,28 @@ const menu = document.getElementById("menu");
 
 if(role === "employee"){
     menu.innerHTML = `
-        <a href="draft-order.html">📦 Δημιουργία Παραγγελίας</a>
-        <a href="inventory.html">📊 Διαχείριση Αποθέματος</a>
+        <a href="draft-order.html">Δημιουργία Παραγγελίας</a>
+        <a href="inventory.html">Διαχείριση Αποθέματος</a>
     `;
 }
 
 else if(role === "manager"){
     menu.innerHTML = `
-        <a href="review-order.html">📝 Έλεγχος Παραγγελίας</a>
-        <a href="dashboard.html">📈 Dashboard Καταστήματος</a>
-        <a href="inventory.html">📊 Διαχείριση Αποθέματος</a>
+        <a href="review-order.html">Έλεγχος Παραγγελίας</a>
+        <a href="dashboard.html">Αναφορές Καταστήματος</a>
+        <a href="inventory.html">Διαχείριση Αποθέματος</a>
     `;
 }
 
 else if(role === "supplier"){
     menu.innerHTML = `
-        <a href="supplier.html">🚚 Τροφοδοσία Καταστήματος</a>
+        <a href="supplier.html">Τροφοδοσία Καταστήματος</a>
     `;
 }
 
 else if(role === "owner"){
     menu.innerHTML = `
-        <a href="owner-reports.html">📊 Αναφορές Καταστημάτων</a>
+        <a href="owner-reports.html">Γενικές Αναφορές</a>
     `;
 }
 
